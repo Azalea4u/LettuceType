@@ -18,6 +18,11 @@ public class GameManager : MonoBehaviour
     
     private float currentOrderTimer;
     private bool isGameActive;
+    private int completedOrderCount = 0;
+    public int CompletedOrderCount => completedOrderCount;
+    
+    // Optional: Event for UI updates
+    public UnityEvent<int> onOrderCountChanged;
     
     private void Start()
     {
@@ -27,6 +32,10 @@ public class GameManager : MonoBehaviour
             return;
         }
         
+        // Subscribe to order events
+        typingManager.onOrderComplete.AddListener(OnOrderComplete);
+        typingManager.onOrderFailed.AddListener(OnOrderFailed);
+
         StartGame();
     }
     
@@ -79,6 +88,8 @@ public class GameManager : MonoBehaviour
     // Called by TypingManager events
     public void OnOrderComplete()
     {
+        completedOrderCount++;
+        onOrderCountChanged?.Invoke(completedOrderCount);
         // Add score or other rewards here
         GenerateNewOrder();
     }

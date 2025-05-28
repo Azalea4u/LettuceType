@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     
     [Header("References")]
     public TypingManager typingManager;
+    public GameManager gameManager;
     
     private void Start()
     {
@@ -28,23 +29,33 @@ public class UIManager : MonoBehaviour
         {
             typingManager = FindObjectOfType<TypingManager>();
         }
+        if (gameManager == null)
+        {
+            gameManager = FindObjectOfType<GameManager>();
+        }
         
         // Subscribe to typing manager events
         typingManager.onCorrectIngredient.AddListener(OnCorrectIngredient);
         typingManager.onWrongIngredient.AddListener(OnWrongIngredient);
         typingManager.onOrderComplete.AddListener(OnOrderComplete);
         typingManager.onOrderFailed.AddListener(OnOrderFailed);
-        
+
         // Setup typing input
-        typingInput.onValueChanged.AddListener(OnTypingInputChanged);
+        typingInput.onSubmit.AddListener(OnTypingSubmitted);
+
+        if (gameManager != null)
+        {
+            gameManager.onOrderCountChanged.AddListener(UpdateOrderCountDisplay);
+        }
     }
-    
+
     public void UpdateOrderDisplay(OrderData order)
     {
         if (order == null) return;
         
-        // Update order ticket
-        string orderText = "Order: " + order.orderName + "\n\nIngredients:";
+        // Update order ticket with tally
+        string orderText = $"Orders Completed: {(gameManager != null ? gameManager.CompletedOrderCount : 0)}\n";
+        orderText += "Order: " + order.orderName + "\n\nIngredients:";
         for (int i = 0; i < order.ingredients.Count; i++)
         {
             orderText += "\n" + (i + 1) + ". " + order.ingredients[i].ingredientName;
@@ -70,19 +81,18 @@ public class UIManager : MonoBehaviour
         IngredientData currentIngredient = typingManager.currentOrder.ingredients[typingManager.currentIngredientIndex];
         currentIngredientText.text = "Type: " + currentIngredient.ingredientName;
     }
-    
-    private void OnTypingInputChanged(string value)
+
+    private void OnTypingSubmitted(string value)
     {
-        // Handle each character input
         foreach (char c in value)
         {
             typingManager.AddCharacter(c);
         }
-        
-        // Clear input field after processing
         typingInput.text = "";
+        typingInput.ActivateInputField(); // Keeps the input focused
     }
-    
+
+
     private void OnCorrectIngredient(IngredientData ingredient)
     {
         // Add ingredient to visual stack
@@ -141,5 +151,11 @@ public class UIManager : MonoBehaviour
         float fillAmount = currentTime / maxTime;
         timerBar.fillAmount = fillAmount;
         timerText.text = Mathf.CeilToInt(currentTime).ToString();
+    }
+
+    private void UpdateOrderCountDisplay(int count)
+    {
+        // Refresh the order display to update the tally
+        UpdateOrderDisplay(typingManager.currentOrder);
     }
 } 
