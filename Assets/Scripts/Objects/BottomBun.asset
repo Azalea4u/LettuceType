@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db8b347aabd3ba45a2426c7e403afd2, type: 3}
+  m_Name: BottomBun
+  m_EditorClassIdentifier: 
+  ingredientName: Bun
+  ingredientSprite: {fileID: 7482667652216324306, guid: c19d09e9ff421de42ab7e178ceff82df, type: 3}
+  height: 1
+  spriteOffset: {x: 0, y: 0}
+  isBun: 1
+  isTopBun: 0
+  isBottomBun: 1

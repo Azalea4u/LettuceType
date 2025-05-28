@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d42797d0756b5a449f57b597508e2e4, type: 3}
+  m_Name: Burger Factory
+  m_EditorClassIdentifier: 
+  bottomBun: {fileID: 11400000, guid: 611c58fcdcf67484ea98c754bdd5f7c7, type: 2}
+  topBun: {fileID: 11400000, guid: 4c8b09a36925da0459a67ac22d47f2cf, type: 2}
+  possibleFillings:
+  - {fileID: 11400000, guid: f435cb8dada9c8f41870390d006adc89, type: 2}
+  minFillings: 1
+  maxFillings: 4
