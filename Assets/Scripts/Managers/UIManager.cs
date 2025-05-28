@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
 {
     [Header("Order Display")]
     public TextMeshProUGUI orderTicketText;
+    public TextMeshProUGUI OrderCompletedText;
     public Image timerBar;
     public TextMeshProUGUI timerText;
     
@@ -53,17 +54,49 @@ public class UIManager : MonoBehaviour
     {
         if (order == null) return;
         
-        // Update order ticket with tally
-        string orderText = $"Orders Completed: {(gameManager != null ? gameManager.CompletedOrderCount : 0)}\n";
-        orderText += "Order: " + order.orderName + "\n\nIngredients:";
-        for (int i = 0; i < order.ingredients.Count; i++)
+        // Update order ticket (with color tags, bottom-to-top)
+        string orderText = "Order: " + order.orderName + "\n";
+        for (int i = order.ingredients.Count - 1; i >= 0; i--)
         {
-            orderText += "\n" + (i + 1) + ". " + order.ingredients[i].ingredientName;
+            string colorTag;
+            if (i < typingManager.currentIngredientIndex)
+                colorTag = "<color=#56da56>"; // green
+            else if (i == typingManager.currentIngredientIndex)
+                colorTag = "<color=#FFFF00>"; // yellow
+            else
+                colorTag = "<color=#FFFFFF>"; // white
+            orderText += $"\n{colorTag}{i + 1}. {order.ingredients[i].ingredientName}</color>";
         }
         orderTicketText.text = orderText;
         
+        // Update completed order tally text
+        if (OrderCompletedText != null && gameManager != null)
+            OrderCompletedText.text = $"Orders Completed: {gameManager.CompletedOrderCount}";
+        
         // Clear and reset burger stack
         ClearBurgerStack();
+        
+        // Add all ingredients to stack and color them (bottom-to-top)
+        float yOffset = 0f;
+        for (int i = order.ingredients.Count - 1; i >= 0; i--)
+        {
+            GameObject ingredientObj = Instantiate(ingredientPrefab, burgerStackContainer);
+            IngredientDisplay display = ingredientObj.GetComponent<IngredientDisplay>();
+            display.SetIngredient(order.ingredients[i]);
+            display.SetDefaultColor(); // Always white in stack now
+            ingredientObj.transform.SetSiblingIndex(0);
+            // Set vertical position for stacking
+            RectTransform rect = ingredientObj.GetComponent<RectTransform>();
+            rect.anchoredPosition = new Vector2(0, yOffset);
+            yOffset -= order.ingredients[i].height * 30f; // 100f is base height, adjust as needed
+            // Hide future ingredients
+            Image img = ingredientObj.GetComponent<Image>();
+            if (i > typingManager.currentIngredientIndex)
+                img.enabled = false;
+            else
+                img.enabled = true;
+            currentStack.Add(ingredientObj);
+        }
         
         // Update current ingredient text
         UpdateCurrentIngredientText();
@@ -95,9 +128,7 @@ public class UIManager : MonoBehaviour
 
     private void OnCorrectIngredient(IngredientData ingredient)
     {
-        // Add ingredient to visual stack
-        AddIngredientToStack(ingredient);
-        UpdateCurrentIngredientText();
+        UpdateOrderDisplay(typingManager.currentOrder);
     }
     
     private void OnWrongIngredient(IngredientData ingredient)
@@ -121,20 +152,7 @@ public class UIManager : MonoBehaviour
     
     private void AddIngredientToStack(IngredientData ingredient)
     {
-        GameObject newIngredient = Instantiate(ingredientPrefab, burgerStackContainer);
-        Image ingredientImage = newIngredient.GetComponent<Image>();
-        ingredientImage.sprite = ingredient.ingredientSprite;
-        
-        // Position the ingredient in the stack
-        RectTransform rectTransform = newIngredient.GetComponent<RectTransform>();
-        float yOffset = 0;
-        foreach (GameObject existingIngredient in currentStack)
-        {
-            yOffset += existingIngredient.GetComponent<RectTransform>().sizeDelta.y;
-        }
-        rectTransform.anchoredPosition = new Vector2(0, yOffset);
-        
-        currentStack.Add(newIngredient);
+        // Deprecated: now handled in UpdateOrderDisplay for color logic
     }
     
     private void ClearBurgerStack()
@@ -155,7 +173,8 @@ public class UIManager : MonoBehaviour
 
     private void UpdateOrderCountDisplay(int count)
     {
-        // Refresh the order display to update the tally
-        UpdateOrderDisplay(typingManager.currentOrder);
+        // Refresh the tally display only
+        if (OrderCompletedText != null && gameManager != null)
+            OrderCompletedText.text = $"Orders Completed: {gameManager.CompletedOrderCount}";
     }
 } 

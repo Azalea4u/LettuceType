@@ -18,6 +18,22 @@ public class IngredientDisplay : MonoBehaviour
         if (ingredient == null) return;
         
         image.sprite = ingredient.ingredientSprite;
-        rectTransform.sizeDelta = new Vector2(100f, 100f); // Default size, adjust as needed
+        rectTransform.sizeDelta = new Vector2(200f, 200f); // Default size, adjust as needed
+    }
+
+    public void SetCurrentColor()
+    {
+        if (image != null)
+            image.color = Color.yellow;
+    }
+    public void SetCompletedColor()
+    {
+        if (image != null)
+            image.color = Color.green;
+    }
+    public void SetDefaultColor()
+    {
+        if (image != null)
+            image.color = Color.white;
     }
 } 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TopBun
   m_EditorClassIdentifier: 
   ingredientName: Bun
-  ingredientSprite: {fileID: 7482667652216324306, guid: c19d09e9ff421de42ab7e178ceff82df, type: 3}
+  ingredientSprite: {fileID: 21300000, guid: 49a8c1dbea3af164d87c5a99768f9fa2, type: 3}
   height: 1
   spriteOffset: {x: 0, y: 0}
   isBun: 1

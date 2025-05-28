@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7db8b347aabd3ba45a2426c7e403afd2, type: 3}
-  m_Name: Patty
+  m_Name: Cheese
   m_EditorClassIdentifier: 
-  ingredientName: Patty
-  ingredientSprite: {fileID: 21300000, guid: 6f7bda41e50d9084a88b5991a1ce1dbb, type: 3}
+  ingredientName: Cheese
+  ingredientSprite: {fileID: 21300000, guid: 6cd7985c09a7a15419ba44400cbe9deb, type: 3}
   height: 1
   spriteOffset: {x: 0, y: 0}
   isBun: 0

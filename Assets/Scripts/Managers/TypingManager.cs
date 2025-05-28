@@ -61,8 +61,8 @@ public class TypingManager : MonoBehaviour
         // Check if input matches expected ingredient
         if (currentName == expectedName)
         {
-            onCorrectIngredient?.Invoke(expectedIngredient);
             currentIngredientIndex++;
+            onCorrectIngredient?.Invoke(expectedIngredient);
             currentInput = "";
             
             // Check if order is complete
