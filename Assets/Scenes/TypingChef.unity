@@ -554,7 +554,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orderTicketText: {fileID: 808061066}
-  OrderCompletedText: {fileID: 1388963728}
+  orderCompletedText: {fileID: 1388963728}
+  scoreText: {fileID: 1018448247}
   timerBar: {fileID: 1713774911}
   timerText: {fileID: 633574418}
   typingInput: {fileID: 1929971527}
@@ -591,6 +592,7 @@ MonoBehaviour:
   onOrderFailed:
     m_PersistentCalls:
       m_Calls: []
+  ingredientCorrectness: 
 --- !u!114 &707055174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1096,7 +1098,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0.00012207031, y: 0}
   m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1018448247

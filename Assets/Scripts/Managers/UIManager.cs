@@ -7,7 +7,8 @@ public class UIManager : MonoBehaviour
 {
     [Header("Order Display")]
     public TextMeshProUGUI orderTicketText;
-    public TextMeshProUGUI OrderCompletedText;
+    public TextMeshProUGUI orderCompletedText;
+    public TextMeshProUGUI scoreText;
     public Image timerBar;
     public TextMeshProUGUI timerText;
     
@@ -59,10 +60,12 @@ public class UIManager : MonoBehaviour
         for (int i = order.ingredients.Count - 1; i >= 0; i--)
         {
             string colorTag;
-            if (i < typingManager.currentIngredientIndex)
+            if (i == typingManager.currentIngredientIndex)
+                colorTag = "<color=#FFFF00>"; // yellow (current ingredient always takes priority)
+            else if (i < typingManager.currentIngredientIndex && typingManager.ingredientCorrectness.Count > i && !typingManager.ingredientCorrectness[i])
+                colorTag = "<color=#FF0000>"; // red for misspelled
+            else if (i < typingManager.currentIngredientIndex)
                 colorTag = "<color=#56da56>"; // green
-            else if (i == typingManager.currentIngredientIndex)
-                colorTag = "<color=#FFFF00>"; // yellow
             else
                 colorTag = "<color=#FFFFFF>"; // white
             orderText += $"\n{colorTag}{i + 1}. {order.ingredients[i].ingredientName}</color>";
@@ -70,8 +73,8 @@ public class UIManager : MonoBehaviour
         orderTicketText.text = orderText;
         
         // Update completed order tally text
-        if (OrderCompletedText != null && gameManager != null)
-            OrderCompletedText.text = $"Orders Completed: {gameManager.CompletedOrderCount}";
+        if (orderCompletedText != null && gameManager != null)
+            orderCompletedText.text = $"Orders Completed: {gameManager.CompletedOrderCount}";
         
         // Clear and reset burger stack
         ClearBurgerStack();
@@ -100,6 +103,10 @@ public class UIManager : MonoBehaviour
         
         // Update current ingredient text
         UpdateCurrentIngredientText();
+        
+        // Update score display
+        if (scoreText != null && typingManager != null)
+            scoreText.text = $"Score: {typingManager.Score}";
     }
     
     private void UpdateCurrentIngredientText()
@@ -117,10 +124,7 @@ public class UIManager : MonoBehaviour
 
     private void OnTypingSubmitted(string value)
     {
-        foreach (char c in value)
-        {
-            typingManager.AddCharacter(c);
-        }
+        typingManager.ProcessFullInput(value);
         typingInput.text = "";
         typingInput.ActivateInputField(); // Keeps the input focused
     }
@@ -133,8 +137,10 @@ public class UIManager : MonoBehaviour
     
     private void OnWrongIngredient(IngredientData ingredient)
     {
-        // Visual feedback for wrong ingredient
-        // Could add shake effect or red flash
+        // Update the UI to show the typo in red and move to the next ingredient
+        UpdateOrderDisplay(typingManager.currentOrder);
+        typingInput.text = "";
+        typingInput.ActivateInputField();
         Debug.Log("Wrong ingredient typed!");
     }
     
@@ -174,7 +180,7 @@ public class UIManager : MonoBehaviour
     private void UpdateOrderCountDisplay(int count)
     {
         // Refresh the tally display only
-        if (OrderCompletedText != null && gameManager != null)
-            OrderCompletedText.text = $"Orders Completed: {gameManager.CompletedOrderCount}";
+        if (orderCompletedText != null && gameManager != null)
+            orderCompletedText.text = $"Orders Completed: {gameManager.CompletedOrderCount}";
     }
 } 

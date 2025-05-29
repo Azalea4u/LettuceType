@@ -18,6 +18,9 @@ public class TypingManager : MonoBehaviour
     public UnityEvent onOrderComplete;
     public UnityEvent onOrderFailed;
     
+    public int Score { get; private set; } = 0;
+    public List<bool> ingredientCorrectness = new List<bool>();
+    
     private void Start()
     {
         if (currentOrder == null)
@@ -33,6 +36,10 @@ public class TypingManager : MonoBehaviour
     {
         currentInput = "";
         currentIngredientIndex = 0;
+        ingredientCorrectness = new List<bool>();
+        if (currentOrder != null)
+            for (int i = 0; i < currentOrder.ingredients.Count; i++)
+                ingredientCorrectness.Add(false);
     }
     
     public void AddCharacter(char c)
@@ -61,6 +68,8 @@ public class TypingManager : MonoBehaviour
         // Check if input matches expected ingredient
         if (currentName == expectedName)
         {
+            ingredientCorrectness[currentIngredientIndex] = true;
+            Score += 1;
             currentIngredientIndex++;
             onCorrectIngredient?.Invoke(expectedIngredient);
             currentInput = "";
@@ -71,11 +80,19 @@ public class TypingManager : MonoBehaviour
                 onOrderComplete?.Invoke();
             }
         }
-        else if (currentName.Length >= expectedName.Length)
+        else if (currentName.Length == expectedName.Length)
         {
-            // Input is too long or doesn't match
+            // Input is incorrect and complete
+            ingredientCorrectness[currentIngredientIndex] = false;
+            Score -= 2;
+            currentIngredientIndex++;
             onWrongIngredient?.Invoke(expectedIngredient);
-            onOrderFailed?.Invoke();
+            currentInput = "";
+            // Check if order is complete
+            if (currentIngredientIndex >= currentOrder.ingredients.Count)
+            {
+                onOrderComplete?.Invoke();
+            }
         }
     }
     
@@ -83,5 +100,40 @@ public class TypingManager : MonoBehaviour
     {
         currentOrder = newOrder;
         ResetTyping();
+    }
+    
+    public void ProcessFullInput(string input)
+    {
+        if (currentOrder == null || currentIngredientIndex >= currentOrder.ingredients.Count)
+            return;
+
+        IngredientData expectedIngredient = currentOrder.ingredients[currentIngredientIndex];
+        string expectedName = isCaseSensitive ? expectedIngredient.ingredientName : expectedIngredient.ingredientName.ToLower();
+        string currentName = isCaseSensitive ? input : input.ToLower();
+
+        if (currentName == expectedName)
+        {
+            ingredientCorrectness[currentIngredientIndex] = true;
+            Score += 1;
+            currentIngredientIndex++;
+            onCorrectIngredient?.Invoke(expectedIngredient);
+            currentInput = "";
+            if (currentIngredientIndex >= currentOrder.ingredients.Count)
+            {
+                onOrderComplete?.Invoke();
+            }
+        }
+        else
+        {
+            ingredientCorrectness[currentIngredientIndex] = false;
+            Score -= 2;
+            currentIngredientIndex++;
+            onWrongIngredient?.Invoke(expectedIngredient);
+            currentInput = "";
+            if (currentIngredientIndex >= currentOrder.ingredients.Count)
+            {
+                onOrderComplete?.Invoke();
+            }
+        }
     }
 } 
