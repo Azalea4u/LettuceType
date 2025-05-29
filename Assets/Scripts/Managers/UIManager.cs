@@ -120,7 +120,7 @@ public class UIManager : MonoBehaviour
         float yOffset = 0;
         foreach (GameObject existingIngredient in currentStack)
         {
-            yOffset += existingIngredient.GetComponent<RectTransform>().sizeDelta.y;
+            yOffset += existingIngredient.GetComponent<RectTransform>().sizeDelta.y - 80;
         }
         rectTransform.anchoredPosition = new Vector2(0, yOffset);
         

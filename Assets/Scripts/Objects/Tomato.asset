@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7db8b347aabd3ba45a2426c7e403afd2, type: 3}
-  m_Name: BottomBun
+  m_Name: Tomato
   m_EditorClassIdentifier: 
-  ingredientName: Bun
-  ingredientSprite: {fileID: -9016742670902949904, guid: f302e5a551d8cba40a67d61a7f36ac73, type: 3}
+  ingredientName: Tomato
+  ingredientSprite: {fileID: -3962807554240710951, guid: ae51b36f43e248c4780c9498cf9c7551, type: 3}
   height: 1
   spriteOffset: {x: 0, y: 0}
-  isBun: 1
+  isBun: 0
   isTopBun: 0
-  isBottomBun: 1
+  isBottomBun: 0

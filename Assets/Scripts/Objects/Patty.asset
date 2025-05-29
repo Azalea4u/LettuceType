@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Patty
   m_EditorClassIdentifier: 
   ingredientName: Patty
-  ingredientSprite: {fileID: 7482667652216324306, guid: c19d09e9ff421de42ab7e178ceff82df, type: 3}
+  ingredientSprite: {fileID: 4059256579526609074, guid: 000b8997f18edd94aaac4945bc309f51, type: 3}
   height: 1
   spriteOffset: {x: 0, y: 0}
   isBun: 0

@@ -16,5 +16,9 @@ MonoBehaviour:
   topBun: {fileID: 11400000, guid: 4c8b09a36925da0459a67ac22d47f2cf, type: 2}
   possibleFillings:
   - {fileID: 11400000, guid: f435cb8dada9c8f41870390d006adc89, type: 2}
+  - {fileID: 11400000, guid: 057f9a4022a094a4eb99d76f3b612e93, type: 2}
+  - {fileID: 11400000, guid: 4c13d29f513ee314cb2fe62896002061, type: 2}
+  - {fileID: 11400000, guid: c5e285082742673478f34a55539115dc, type: 2}
+  - {fileID: 11400000, guid: cd0bce13033b3eb4bbb642529023d7e4, type: 2}
   minFillings: 1
-  maxFillings: 4
+  maxFillings: 5
